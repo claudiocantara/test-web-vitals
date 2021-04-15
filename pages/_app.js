@@ -1,14 +1,13 @@
 import "../styles/globals.css";
 
 export function reportWebVitals({ id, name, label, value }) {
-  // Analytics 4 compability
-  gtag("event", name, {
-    // Built-in params:
-    value: delta, // Use `delta` so the value can be summed.
-    // Custom params:
-    metric_id: id, // Needed to aggregate events.
-    metric_value: value, // Optional.
-    metric_delta: delta, // Optional.
+  window.gtag("event", name, {
+    event_category:
+      label === "web-vital" ? "Web Vitals" : "Next.js custom metric",
+    value: Math.round(name === "CLS" ? value * 1000 : value), // values must be integers
+    event_label: id, // id unique to current page load
+    non_interaction: true, // avoids affecting bounce rate.
+    transport: "beacon",
   });
 }
 
